@@ -21,7 +21,7 @@ services:
     ports:
       - "18000:8000"
       - "10080:80"
-    links:
+    depends_on:
       - db
     environment:
       # 以下はrun.shがconfig.pyを修正する際に利用
