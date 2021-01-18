@@ -5,12 +5,14 @@
 2. django+gunicorn+nginxのコンテナ
 
 ## ファイル構成
+```
 docker-compose.yml
 db/        ...dbコンテナの/var/lib/pgsql配下でマウント
 web/
  +Dockerfile
  +setting/ ...webコンテナのイメージ生成に必要なファイル達
  +src/     ...webコンテナの/codeでマウント(djangoのコード)
+```
 
 ## Setup
 ```
@@ -27,7 +29,7 @@ docker-compose build
 docker-compose up
 ```
 
-## web/src/配下を修正した場合
+## 開発時にweb/src/配下を修正した場合
 gunicornにSIGHUPを送る
 ```
 docker ps
