@@ -17,6 +17,10 @@ if [[ ! -d project ]]; then
   django-admin startproject config
   mv config project
 
+  # 静的フォルダ作成 http://.../static/index.htmlとなる
+  mkdir /code/static
+  touch /code/static/index.html
+
   # -- 設定をsqlite3 -> posetgres接続に変更 --
   cd /code/project/config
   cp -p settings.py settings.py.org 
@@ -35,14 +39,16 @@ if [[ ! -d project ]]; then
   echo あとは、project/config/settings.pyのALLOWED_HOSTS=[]を設定するとサンプルページが見れます。
 fi
 
+# postgresの起動を待つ(待たなくてもなんとかなるようだ)
+#/bin/bash /setting/wait-for-postgres.sh db:5432
+
 # gunicorn起動 ( config.wsgiはproject配下のconfig/wsgi.pyという意味)
 #  (概念的にはgunicorn.socketに接続があるとdjangoの機能を呼び出す感じ)
 cd /code/project
 gunicorn --pid /run/gunicorn.pid --bind unix:/run/gunicorn.socket config.wsgi &
 
 
-# nginx起動
-/sbin/nginx
+/usr/sbin/nginx
 
 # django起動(通常起動する必要なし)
 cd /code/project
